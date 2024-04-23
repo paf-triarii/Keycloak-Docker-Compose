@@ -19,7 +19,8 @@ display_help() {
   echo -e "\033[34m  --user          User for the Keycloak instance admin. Default: admin\033[0m"
   echo -e "\033[34m  --password      Password for the Keycloak instance admin. Default: admin\033[0m"
   echo -e "\033[34m  --port          Port for the Keycloak instance. Default: 8443\033[0m"
-  echo -e "\033[34m  --clean         If set, removes the docker compose and auxiliar generated assets.\033[0m"
+  echo -e "\033[34m  --debug         If set, server log level is set to DEBUG.\033[0m"
+  echo -e "\033[33m  --clean         If set, removes the docker compose and auxiliar generated assets.\033[0m"
   echo
   exit 0
 }
@@ -40,6 +41,10 @@ create_env() {
   echo "KC_DB_PASSWORD=${db_password}" >> .env
   echo "KC_DB_URL=jdbc:postgresql://postgres:5432/${db_name}" >> .env
   echo "KC_HOSTNAME=${domain}" >> .env
+
+  if [ "$debug" = true ]; then
+    echo "KC_LOG_LEVEL=DEBUG" >> .env
+  fi
 }
 
 copy_docker_compose() {
@@ -184,6 +189,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --clean)
       clean="true"
+      shift
+      ;;
+    --debug)
+      debug="true"
       shift
       ;;
     *)

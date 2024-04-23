@@ -69,6 +69,7 @@ To get started with this project, you need to run the `start.sh` script. This sc
 - `--password`: Password for the Keycloak instance admin. Default: admin
 - `--port`: Port for the Keycloak instance. Default: 8443
 - `--clean`: If set, removes the docker compose and auxiliary generated assets.
+- `--debug`: Enables debug verbosity.
 
 ![Help](docs/img/help.png)
 
@@ -77,6 +78,9 @@ Here's an example of how to run the script:
 ```bash
 ./start.sh --port 8443 --gen_certs
 ```
+
+> \[!TIP\]
+> If you want to enable more verbosity in logs, just pass the `--debug` argument!
 
 <div align="center">
 
