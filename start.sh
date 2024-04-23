@@ -63,8 +63,11 @@ create_keycloak_certs() {
   if [ "$gen_certs" = true ]; then
     docker run -d --rm --name keycloak-gen -w /opt/keycloak --entrypoint sleep quay.io/keycloak/keycloak:${keycloak_version} infinity
     docker exec -it keycloak-gen sh -c  "keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname \"CN=${domain}\" -alias server -ext \"SAN:c=DNS:localhost,IP:127.0.0.1\" -keystore conf/server.keystore"
+    docker exec -it keycloak-gen sh -c  "keytool -exportcert -alias server -storepass password -file conf/server.crt -keystore conf/server.keystore"
     docker cp keycloak-gen:/opt/keycloak/conf/server.keystore server.keystore
+    docker cp keycloak-gen:/opt/keycloak/conf/server.crt server.crt
     docker rm -f keycloak-gen
+    openssl x509 -inform der -in server.crt -out server.pem
   fi
 }
 
@@ -200,6 +203,7 @@ if [ "$clean" = true ]; then
   rm -f .env
   rm -f docker-compose-ready.yml
   rm -f server.keystore
+  rm -f server.pem
 else
   set_defaults
   create_env
