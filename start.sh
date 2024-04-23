@@ -14,7 +14,7 @@ display_help() {
   echo -e "\033[34m  --gen_certs     Indicates if self-signed certificates should be generated\033[0m"
   echo -e "\033[34m  --key           Path to the private key file (required if --gen_certs is not set)\033[0m"
   echo -e "\033[34m  --cert          Path to the certificate file (required if --gen_certs is not set)\033[0m"
-  echo -e "\033[34m  --cert-cn       Common Name (CN) for the generated self-signed certificates. Default: Ip of eth0 interface of your system.\033[0m"
+  echo -e "\033[34m  --domain       Common Name (CN) for the generated self-signed certificates. Default: Ip of eth0 interface of your system.\033[0m"
   echo -e "\033[34m  --cert-org      Organization (O) for the generated self-signed certificates. Default: CodeTriarii\033[0m"
   echo -e "\033[34m  --user          User for the Keycloak instance admin. Default: admin\033[0m"
   echo -e "\033[34m  --password      Password for the Keycloak instance admin. Default: admin\033[0m"
@@ -154,7 +154,7 @@ while [[ $# -gt 0 ]]; do
       shift
       shift
       ;;
-    --cert-cn)
+    --domain)
       domain="$2"
       shift
       shift

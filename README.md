@@ -26,10 +26,7 @@ This project serves the purpose of setting up a `Keycloak` instance leveraging `
   - [💡 Structure](#-structure)
   - [🚀 Installation and Execution](#-installation-and-execution)
     - [🔨 Prerequisites](#-prerequisites)
-    - [🗜️ Installation](#️-installation)
-      - [Local environment](#local-environment)
-      - [Docker environment](#docker-environment)
-    - [💼 Usage](#-usage)
+    - [🗜️ Getting Started](#️-getting-started)
   - [📍 Roadmap](#-roadmap)
   - [📎 Contributing](#-contributing)
   - [📃 License](#-license)
@@ -54,54 +51,42 @@ sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/
 sudo chmod a+x /usr/local/bin/yq
 ```
 
-
 [🔝 Back to top](#-keycloak-docker-compose)
 
-### 🗜️ Installation
+### 🗜️ Getting Started
 
-#### Local environment
+To get started with this project, you need to run the `start.sh` script. This script accepts several options:
 
-1. Clone the repo
+- `--db_user`: PostgreSQL database user. Default: keycloak
+- `--db_password`: PostgreSQL database password. Default: keycloak
+- `--db_name`: PostgreSQL database name. Default: keycloak
+- `--gen_certs`: Indicates if self-signed certificates should be generated
+- `--key`: Path to the private key file (required if --gen_certs is not set)
+- `--cert`: Path to the certificate file (required if --gen_certs is not set)
+- `--cert-cn`: Common Name (CN) for the generated self-signed certificates. Default: Ip of eth0 interface of your system
+- `--cert-org`: Organization (O) for the generated self-signed certificates. Default: CodeTriarii
+- `--user`: User for the Keycloak instance admin. Default: admin
+- `--password`: Password for the Keycloak instance admin. Default: admin
+- `--port`: Port for the Keycloak instance. Default: 8443
+- `--clean`: If set, removes the docker compose and auxiliary generated assets.
 
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
+![Help](docs/img/help.png)
 
-2. Install packages
-
-   ```sh
-   npm install
-   ```
-
-3. Enter your API in `config.js`
-
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-#### Docker environment
-
-Install `Docker Engine`. Visit [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/) for more information.
-
-1. Build docker image:
+Here's an example of how to run the script:
 
 ```bash
-docker build -t <image_name>:<tag> .
+./start.sh --port 8443 --gen_certs
 ```
 
-2. Run docker image:
+<div align="center">
 
-```bash
-docker run -it --name <container_name> -p <ports...> -v <volumes...> <image_name>:<tag>
-```
+![Keycloak](docs/img/keycloak.gif)
 
-[🔝 Back to top](#-keycloak-docker-compose)
+</div>
 
-<!-- USAGE EXAMPLES -->
-### 💼 Usage
+> \[!TIP\]
+> If you want the port to be mapped with 443 (privileged port), launch the command with sudo!
 
-
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 [🔝 Back to top](#-keycloak-docker-compose)
 
@@ -110,13 +95,11 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## 📍 Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-  - [x] English
-  - [ ] Spanish
+- [x] Automated start script.
+- [x] Included automated clean-up.
+- [x] Extended help for user friendly understanding.
+- [x] Included multiple args for flexibility.
+- [x] Prepared for HTTPS. Either with cert automated generation or inputting your own certs.
 
 See the [open issues](https://github.com/paf-triarii/Keycloak-Docker-Compose/issues) for a full list of proposed features (and known issues).
 
