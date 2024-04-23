@@ -1,26 +1,27 @@
 <div align="center">
 
 <!-- PROJECT LOGO -->
-# 📝 Project Name
+# 📝 Keycloak Docker Compose
 
+![Keycloak Badge](https://img.shields.io/badge/Keycloak-4D4D4D?logo=keycloak&logoColor=fff&style=flat)
+![Docker Badge](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=flat)
+![PostgreSQL Badge](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=fff&style=flat)
 
-<!-- TECNOLOGIES -->
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Selenium](https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=Selenium&logoColor=white)
-![Brave](https://img.shields.io/badge/Brave-FB542B?style=for-the-badge&logo=Brave&logoColor=white)
-![Chromium](https://img.shields.io/badge/Chromium-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In purus nulla, consectetur nec justo id, mattis venenatis mi. Suspendisse potenti. Donec et tempus libero, in aliquam lectus. Sed volutpat, eros sit amet vulputate auctor, sem enim lacinia arcu, ac porta dolor neque a mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse lacinia, quam quis vestibulum rutrum, justo elit bibendum magna, quis dapibus augue diam in lorem. Phasellus tristique vitae leo id sagittis.
+This project serves the purpose of setting up a `Keycloak` instance leveraging `docker compose` exposed over HTTPS leveraging self-signed certificates.
 
-[View Demo](#) · [Report Bug](PROJECT_URL_TO_REPLACE/issues) · [Request Feature](PROJECT_URL_TO_REPLACE/issues)
+---
+
+[Report Bug](https://github.com/paf-triarii/Keycloak-Docker-Compose/issues) · [Request Feature](https://github.com/paf-triarii/Keycloak-Docker-Compose/issues)
 </div>
 
 <!-- TABLE OF CONTENTS -->
 
 
 ## 📚 Table of contents
-- [📝 Project Name](#-project-name)
+
+- [📝 Keycloak Docker Compose](#-keycloak-docker-compose)
   - [📚 Table of contents](#-table-of-contents)
   - [💡 Structure](#-structure)
   - [🚀 Installation and Execution](#-installation-and-execution)
@@ -45,13 +46,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. In purus nulla, consect
 
 ### 🔨 Prerequisites
 
-- Docker
-- Python 3.10+
-- Node 19+
-- Selenium, BeautifulSoup, undetected_chromedriver
-- Brave Browser & Compatible WebDriver (Chromedriver/Geckodriver)
+- Docker CE installed (including compose plugin) - [How to install Docker CE](https://docs.docker.com/engine/install/)
+- yq YAML processor installed.
 
-[🔝 Back to top](#-project-name)
+```bash
+sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+sudo chmod a+x /usr/local/bin/yq
+```
+
+
+[🔝 Back to top](#-keycloak-docker-compose)
 
 ### 🗜️ Installation
 
@@ -91,7 +95,7 @@ docker build -t <image_name>:<tag> .
 docker run -it --name <container_name> -p <ports...> -v <volumes...> <image_name>:<tag>
 ```
 
-[🔝 Back to top](#-project-name)
+[🔝 Back to top](#-keycloak-docker-compose)
 
 <!-- USAGE EXAMPLES -->
 ### 💼 Usage
@@ -99,7 +103,7 @@ docker run -it --name <container_name> -p <ports...> -v <volumes...> <image_name
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-[🔝 Back to top](#-project-name)
+[🔝 Back to top](#-keycloak-docker-compose)
 
 <!-- GETTING STARTED -->
 
@@ -111,14 +115,12 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Add Additional Templates w/ Examples
 - [ ] Add "components" document to easily copy & paste sections of the readme
 - [ ] Multi-language Support
-    - [x] English
-    - [ ] Spanish
+  - [x] English
+  - [ ] Spanish
 
-See the [open issues](PROJECT_URL_TO_REPLACE/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/paf-triarii/Keycloak-Docker-Compose/issues) for a full list of proposed features (and known issues).
 
-For a more detailed understanding of the project progress, check the <a href="docs/CHANGELOG.md">CHANGELOG</a>
-
-[🔝 Back to top](#-project-name)
+[🔝 Back to top](#-keycloak-docker-compose)
 
 <!-- CONTRIBUTING -->
 ## 📎 Contributing
@@ -148,14 +150,14 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 5. Open a Pull Request
 
-[🔝 Back to top](#-project-name)
+[🔝 Back to top](#-keycloak-docker-compose)
 
 <!-- LICENSE -->
 ## 📃 License
 
 Distributed under the [`APACHE 2.0`](./LICENSE) License.
 
-[🔝 Back to top](#-project-name)
+[🔝 Back to top](#-keycloak-docker-compose)
 
 <!-- CONTACT -->
 ## 👥 Contact
@@ -184,20 +186,14 @@ Do not skip it, you will like it :smirk: :smirk: :smirk: :+1:
 
 Don't forget to give the project a star if you liked it! Thanks again! :star2: :yellow_heart:
 
-[🔝 Back to top](#-project-name)
+[🔝 Back to top](#-keycloak-docker-compose)
 
 <!-- ACKNOWLEDGMENTS -->
 ## 🔍 Acknowledgments
 
 :100: :100: :100: For those that are curious about some of the resources or utilities and for sure thanking and giving credit to authors, we provide you a list of the most interesting ones (in our understanding) :100: :100: :100:
 
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
-- [GitHub Pages](https://pages.github.com)
-- [Font Awesome](https://fontawesome.com)
-- [React Icons](https://react-icons.github.io/react-icons/search)
+- [eabykov Keycloak Compose](https://github.com/eabykov/keycloak-compose/tree/main) - Thank you for the reference. The star is given 😉
+- [Keycloak in a container - Official Documentation](https://www.keycloak.org/server/containers)
 
-[🔝 Back to top](#-project-name)
+[🔝 Back to top](#-keycloak-docker-compose)

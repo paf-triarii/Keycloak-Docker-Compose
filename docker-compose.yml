@@ -1,0 +1,49 @@
+version: "3.9"
+
+### Logging format
+x-logging: &logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  postgres:
+    image: postgres:${POSTGRES_VERSION}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_DB}"]
+    env_file:
+      - .env
+    networks:
+      - keycloak
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    logging: *logging
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:${KC_VERSION}
+    command: 
+      - start
+      - --https-key-store-file=/opt/keycloak/conf/server.keystore
+      - --https-key-store-password=password
+      - --http-enabled=false
+      - --verbose
+    restart: unless-stopped
+    networks:
+      - keycloak
+    env_file:
+      - .env
+    ports:
+      - HOST_PORT:8443
+    volumes:
+      - ./server.keystore:/opt/keycloak/conf/server.keystore
+    logging: *logging
+
+volumes:
+  postgres:
+    driver: local
+
+networks:
+  keycloak:
+    driver: bridge
