@@ -68,6 +68,7 @@ To get started with this project, you need to run the `start.sh` script. This sc
 - `--user`: User for the Keycloak instance admin. Default: admin
 - `--password`: Password for the Keycloak instance admin. Default: admin
 - `--port`: Port for the Keycloak instance. Default: 8443
+- `--ream`: [Optional] Points to a realm json file to set the import.
 - `--clean`: If set, removes the docker compose and auxiliary generated assets.
 - `--debug`: Enables debug verbosity.
 
@@ -90,6 +91,9 @@ Here's an example of how to run the script:
 
 > \[!TIP\]
 > If you want the port to be mapped with 443 (privileged port), launch the command with sudo!
+
+> \[!TIP\]
+> You can load a realm of your own by using the `--realm <path-to-file>.json` option.
 
 
 [🔝 Back to top](#-keycloak-docker-compose)

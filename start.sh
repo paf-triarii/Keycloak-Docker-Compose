@@ -14,11 +14,12 @@ display_help() {
   echo -e "\033[34m  --gen_certs     Indicates if self-signed certificates should be generated\033[0m"
   echo -e "\033[34m  --key           Path to the private key file (required if --gen_certs is not set)\033[0m"
   echo -e "\033[34m  --cert          Path to the certificate file (required if --gen_certs is not set)\033[0m"
-  echo -e "\033[34m  --domain       Common Name (CN) for the generated self-signed certificates. Default: Ip of eth0 interface of your system.\033[0m"
+  echo -e "\033[34m  --domain        Common Name (CN) for the generated self-signed certificates. Default: Ip of eth0 interface of your system.\033[0m"
   echo -e "\033[34m  --cert-org      Organization (O) for the generated self-signed certificates. Default: CodeTriarii\033[0m"
   echo -e "\033[34m  --user          User for the Keycloak instance admin. Default: admin\033[0m"
   echo -e "\033[34m  --password      Password for the Keycloak instance admin. Default: admin\033[0m"
   echo -e "\033[34m  --port          Port for the Keycloak instance. Default: 8443\033[0m"
+  echo -e "\033[34m  --realm         Path to the realm configuration file (.json format). Optional.\033[0m"
   echo -e "\033[34m  --debug         If set, server log level is set to DEBUG.\033[0m"
   echo -e "\033[33m  --clean         If set, removes the docker compose and auxiliar generated assets.\033[0m"
   echo
@@ -64,15 +65,27 @@ set_ports() {
   rm docker-compose-ready.yml.bak
 }
 
+set_command_import_realm() {
+  if [ -n "$realm" ]; then
+    cp docker-compose-ready.yml docker-compose-ready.yml.bak
+    yq read docker-compose-ready.yml.bak -j | jq \
+    ".services.keycloak.command += [\"--import-realm\"]" |  jq ".services.keycloak.volumes += [\"./${realm}:/opt/keycloak/data/import/realm.json:ro\"]" | yq  read -P - > docker-compose-ready.yml
+    rm docker-compose-ready.yml.bak
+  fi
+}
+
 create_keycloak_certs() {
   if [ "$gen_certs" = true ]; then
     docker run -d --rm --name keycloak-gen -w /opt/keycloak --entrypoint sleep quay.io/keycloak/keycloak:${keycloak_version} infinity
-    docker exec -it keycloak-gen sh -c  "keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname \"CN=${domain}\" -alias server -ext \"SAN:c=DNS:localhost,IP:127.0.0.1\" -keystore conf/server.keystore"
+    docker exec -it keycloak-gen sh -c  "keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname \"CN=${domain}\" -alias server -ext \"SAN:c=DNS:${domain},IP:${ip}\" -keystore conf/server.keystore"
     docker exec -it keycloak-gen sh -c  "keytool -exportcert -alias server -storepass password -file conf/server.crt -keystore conf/server.keystore"
+    docker exec -it keycloak-gen sh -c  "keytool -exportcert -alias server -storepass password -file conf/ca.crt -keystore conf/server.keystore"
     docker cp keycloak-gen:/opt/keycloak/conf/server.keystore server.keystore
     docker cp keycloak-gen:/opt/keycloak/conf/server.crt server.crt
+    docker cp keycloak-gen:/opt/keycloak/conf/ca.crt ca.crt
     docker rm -f keycloak-gen
     openssl x509 -inform der -in server.crt -out server.pem
+    openssl x509 -inform der -in ca.crt -out ca.pem
   fi
 }
 
@@ -111,7 +124,8 @@ set_defaults() {
   db_name="${db_name:-keycloak}"
   postgres_version="${postgres_version:-16}"
   keycloak_version="${keycloak_version:-24.0.1}"
-  domain="${domain:-$(ip addr show eth0 | grep -oP 'inet \K[\d.]+')}"
+  ip=$(ip addr show eth0 | grep -oP 'inet \K[\d.]+')
+  domain="${domain:-${ip}}"
   cert_org="${cert_org:-CodeTriarii}"
   port="${port:-8443}"
 }
@@ -182,6 +196,11 @@ while [[ $# -gt 0 ]]; do
       shift
       shift
       ;;
+    --realm)
+      realm="$2"
+      shift
+      shift
+      ;;
     --port)
       port="$2"
       shift
@@ -221,6 +240,7 @@ else
   set_ports
   create_keycloak_certs
   use_provided_certs
+  set_command_import_realm
   docker compose -f docker-compose-ready.yml up -d
   print_details
 fi
